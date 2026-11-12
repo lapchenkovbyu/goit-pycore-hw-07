@@ -49,6 +49,8 @@ class Birthday(Field):
 
     def __init__(self, value: str) -> None:
         try:
+            if len(value) != 10:  # strptime also accepts "5.3.2000"
+                raise ValueError
             parsed = datetime.strptime(value, DATE_FORMAT).date()
         except (ValueError, TypeError):
             raise ValueError("Invalid date format. Use DD.MM.YYYY") from None
@@ -134,7 +136,7 @@ class AddressBook(UserDict):
         self.data.pop(name, None)
 
     def get_upcoming_birthdays(self, today: Optional[date] = None) -> list[dict]:
-        """Return who to congratulate in the next 7 days, today included.
+        """Return who to congratulate from today up to 7 days ahead (inclusive).
 
         A birthday on Saturday or Sunday is congratulated on the next Monday.
         Result items: {"name": str, "congratulation_date": "DD.MM.YYYY"}.
@@ -150,7 +152,7 @@ class AddressBook(UserDict):
             if birthday < today:
                 birthday = _birthday_in_year(record.birthday.value, today.year + 1)
 
-            if (birthday - today).days >= DAYS_AHEAD:
+            if (birthday - today).days > DAYS_AHEAD:
                 continue
 
             if birthday.weekday() >= 5:  # 5 = Saturday, 6 = Sunday

@@ -26,7 +26,7 @@ Behaviour:
 - `Phone`: must be exactly 10 digits, otherwise `ValueError`.
 - `Birthday`: parsed with `datetime.strptime` (`DD.MM.YYYY`), stored as a `date`; bad input raises `ValueError("Invalid date format. Use DD.MM.YYYY")`.
 - `Record.add_birthday(value)`: sets the only birthday, adding again replaces it.
-- `AddressBook.get_upcoming_birthdays(today=None)`: birthdays from today up to 7 days ahead (today included); a Saturday or Sunday birthday is congratulated on the next Monday; a birthday already passed this year counts for next year; Feb 29 becomes Mar 1 in non-leap years. Returns `{"name", "congratulation_date": "DD.MM.YYYY"}` items.
+- `AddressBook.get_upcoming_birthdays(today=None)`: birthdays from today up to and including 7 days ahead; a Saturday or Sunday birthday is congratulated on the next Monday; a birthday already passed this year counts for next year; Feb 29 becomes Mar 1 in non-leap years. Returns `{"name", "congratulation_date": "DD.MM.YYYY"}` items.
 - `@input_error` turns `ValueError` (validation messages), `IndexError` (missing arguments) and `KeyError` (unknown contact) into user messages, so the bot never crashes on bad input.
 - Empty input is ignored; unknown commands print `Invalid command.`; Ctrl+C or Ctrl+D print `Good bye!` and exit cleanly.
 - Contact names are case-sensitive.
